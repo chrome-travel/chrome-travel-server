@@ -50,7 +50,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
 
-    phone_number: DataTypes.INTEGER,
+    phone_number: DataTypes.STRING,
 
     gender: {
       type: DataTypes.BOOLEAN,
