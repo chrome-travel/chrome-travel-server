@@ -95,9 +95,9 @@ class Controller{
             })
     }
 
-    static getLocation (req, res, next) {
+    static getTop5Hotel (req, res, next) {
         let query = req.body.query;
-        
+
         axios({
             "method":"GET",
             "url":"https://tripadvisor1.p.rapidapi.com/locations/search",
@@ -109,12 +109,32 @@ class Controller{
                 query
             }
         })
+            .then(response => {
+                let locId = response.data.data[0].result_object.location_id;
+                return axios({
+                    "method":"GET",
+                    "url":"https://tripadvisor1.p.rapidapi.com/hotels/list",
+                    "headers":{
+                        "x-rapidapi-host":"tripadvisor1.p.rapidapi.com",
+                        "x-rapidapi-key":"4a003621a5msh52f32a49632069bp1c8464jsn6d981b16e394"
+                    },
+                    "params":{
+                        "limit":"5",
+                        "order":"asc",
+                        "sort":"recommended",
+                        "location_id":locId,
+                    }
+                })
+            })
             .then((response)=>{
-              res.status(200).json(response.data)
+                // console.log(response);
+                let result = response.data.data.map(el => el = el.name)
+                res.status(200).json({hotels: result})
             })
-            .catch((error)=>{
-              console.log(error)
-            })
+            .catch(err => {
+                next(err);
+                console.log(error);
+            });
     }
 }
 

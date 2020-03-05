@@ -13,7 +13,7 @@ router.use("/destinations", destinationRouter)
 router.use('/users', UserRouter)
 router.use('/wishlist', wishlistRoute);
 
-router.get('/tripadvisor', Controller.getLocation);
+router.get('/gethotel', Controller.getTop5Hotel);
 
 router.use(errorHandler)
 
