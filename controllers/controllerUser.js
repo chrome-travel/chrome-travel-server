@@ -1,23 +1,20 @@
 const { User } = require('./../models')
+const CustomError = require('../helpers/customError');
+const notFound = "User not found!";
+class ControllerUser {
 
-class ControllerUser{
-
-    static getUsers(req,res,next) {
+    static getUsers(req, res, next) {
         User.findAll()
             .then(users => {
-                console.log(users)
                 res.status(200).json(users)
             })
             .catch(err => {
-                console.log(err)
-                res.status(500).json(err)
+                next(err)
             })
     }
 
-    static createUser(req,res,next) {
-        const { name, email, password, phone_number, gender, is_active, role} = req.body
-        console.log(gender)
-        console.log(typeof gender)
+    static createUser(req, res, next) {
+        const { name, email, password, phone_number, gender, is_active, role } = req.body
         User.create({
             name,
             email,
@@ -28,18 +25,16 @@ class ControllerUser{
             role
         })
             .then(user => {
-                console.log(user)
                 res.status(201).json(user)
             })
             .catch(err => {
-                console.log(err)
-                res.status(500).json(err)
+                next(err)
             })
     }
 
-    static updateUser(req,res,next) {
+    static updateUser(req, res, next) {
         let id = req.params.id
-        const { name, email, password, phone_number, gender, is_active, role} = req.body
+        const { name, email, password, phone_number, gender, is_active, role } = req.body
         User.update({
             name,
             email,
@@ -48,47 +43,47 @@ class ControllerUser{
             gender,
             is_active,
             role
-        },{
+        }, {
             where: {
                 id
             },
             returning: true
         })
             .then(updated => {
-                const user = updated[1]
-                res.status(200).json(user)
+                if (updated[0]) {
+                    res.status(200).json(updated[1][0]);
+                } else {
+                    throw new CustomError(400, notFound);
+                }
             })
             .catch(err => {
-                console.log(err)
-                res.status(500).json(err)
+                next(err)
             })
     }
 
-    static deleteUser(req,res,next) {
+    static deleteUser(req, res, next) {
         let id = req.params.id
         let user
         User.findByPk(id)
             .then(result => {
-                if (!result) {
-                    throw({name: "Not Found", errors: {message: "UserNotFound"}})
-                } else {
-                    user = result
+                if (result) {
+                    user = result;
                     return User.destroy({
                         where: {
-                            id
+                            id: id
                         }
                     })
+                } else {
+                    throw new CustomError(400, notFound)
                 }
             })
             .then(result => {
                 res.status(200).json(user)
             })
             .catch(err => {
-                res.status(500).json(err)
+                next(err)
             })
-        
     }
-    
 }
 
 module.exports = ControllerUser
