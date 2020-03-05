@@ -5,7 +5,7 @@ const notFound = "Wishlist not found!";
 class WishlistController {
 	static getAll(req, res, next) {
 		let UserId = req.decoded.id;
-
+		// console.log(req)
 		UserDestination.findAll({
 			where: {
 				UserId
@@ -22,7 +22,7 @@ class WishlistController {
 
 	static getById(req, res, next) {
 		let id = req.params.id;
-
+		console.log(id)
 		UserDestination.findOne({
 			where: {
 				id
