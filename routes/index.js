@@ -8,6 +8,7 @@ const YoutubeController = require('../controllers/youtubeController')
 
 router.get('/youtubeSearch', YoutubeController.search)
 router.post('/login', Controller.login)
+router.post('/loginGoogle', Controller.loginGoogle)
 router.use("/destinations", destinationRouter)
 router.use('/users', UserRouter)
 router.use('/wishlist', wishlistRoute);
