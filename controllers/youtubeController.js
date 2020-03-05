@@ -3,11 +3,12 @@ const axios = require('axios')
 class YoutubeController {
 
   static search(req, res, next) {
+    console.log(req.body);
     let query = req.body.query
-
+    console.log(query);
     axios({
       method: 'GET',
-      url: `https://www.googleapis.com/youtube/v3/search?q=${query}&part=snippet&maxResults=5&order=viewCount&`,
+      url: `https://www.googleapis.com/youtube/v3/search?q=${query}&part=snippet&maxResults=5&order=viewCount`,
       headers: {
         "content-type": "application/json",
         "Authorization": `Bearer ${process.env.YOUTUBE_ACCESS_TOKEN}`
@@ -20,6 +21,7 @@ class YoutubeController {
       })
 
       .catch(err => {
+        console.log(err);
         next(err)
       })
   }
