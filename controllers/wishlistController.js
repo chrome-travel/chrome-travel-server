@@ -1,9 +1,8 @@
 const { UserDestination, User, Destination } = require('../models');
 
-class UserDestinationController {
+class WishlistController {
 	static getAll (req, res, next) {
-		// let UserId = req.decode.UserId;
-		let UserId = req.body.UserId;
+		let UserId = req.decoded.id;
 
 		UserDestination.findAll({
 			where: { 
@@ -15,7 +14,7 @@ class UserDestinationController {
 				res.status(200).json(result);
 			})
 			.catch(err => {
-				res.status(500).json(err);
+				throw new CustomError(500, err)
 			});
 	}
 
@@ -32,13 +31,12 @@ class UserDestinationController {
 				res.status(200).json(result);
 			})
 			.catch(err => {
-				res.status(500).json(err);
+				throw new CustomError(500, err)
 			});
 	}
 
 	static create (req, res, next) {
-		// let UserId = req.decode.id;
-		let UserId = req.body.UserId;
+		let UserId = req.decoded.id;
 		let DestinationId = req.body.DestinationId;
 		let date = req.body.date;
 
@@ -51,14 +49,13 @@ class UserDestinationController {
 				res.status(201).json(result);
 			})
 			.catch(err => {
-				console.log(err);
-				res.status(500).json(err);
+				throw new CustomError(500, err)
 			})
 	}
 
 	static update (req, res, next) {
 		let id = req.params.id;
-		let UserId = req.body.UserId;
+		let UserId = req.decoded.id;
 		let DestinationId = req.body.DestinationId;
 		let date = req.body.date;
 
@@ -94,4 +91,4 @@ class UserDestinationController {
 	}
 }
 
-module.exports = UserDestinationController;
+module.exports = WishlistController;
