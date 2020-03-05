@@ -1,7 +1,8 @@
-const { User } = require('./../models')
-const CustomError = require('./../helpers/customError')
-const { comparePass } = require('./../helpers/bcrypt')
-const { generateToken } = require('./../helpers/jwt')
+const { User } = require('./../models');
+const CustomError = require('./../helpers/customError');
+const { comparePass } = require('./../helpers/bcrypt');
+const { generateToken } = require('./../helpers/jwt');
+const axios = require('axios');
 
 class Controller{
     static login(req,res,next){
@@ -41,8 +42,53 @@ class Controller{
             .catch(err => {
                 // console.log(err)
                 res.status(500).json(err)
+            });
+    }
+
+    static testTripAdvisor (req, res, next) {
+        // axios({
+        //     method: 'GET',
+        //     url: 'https://tripadvisor1.p.rapidapi.com/locations/search',
+        //     headers: {
+        //         "content-type":"application/octet-stream",
+        //         "x-rapidapi-host":"tripadvisor1.p.rapidapi.com",
+        //         "x-rapidapi-key":"4a003621a5msh52f32a49632069bp1c8464jsn6d981b16e394"
+        //     },
+        //     params:{
+        //         "query":"bali"
+        //     }
+        // })
+        //     .then(result => {
+        //         res.status(200).json(result);
+        //     })
+        //     .catch(err => {
+        //         res.status(500).json(err);
+        //     });
+
+        axios({
+            "method":"GET",
+            "url":"https://tripadvisor1.p.rapidapi.com/locations/search",
+            "headers":{
+            // "content-type":"application/octet-stream",
+            "x-rapidapi-host":"tripadvisor1.p.rapidapi.com",
+            "x-rapidapi-key":"4a003621a5msh52f32a49632069bp1c8464jsn6d981b16e394"
+            },"params":{
+            // "location_id":"1",
+            // "limit":"30",
+            // "sort":"relevance",
+            // "offset":"0",
+            // "lang":"en_US",
+            // "currency":"USD",
+            // "units":"km",
+            "query":"pattaya"
+            }
             })
-            
+            .then((response)=>{
+              res.status(200).json(response.data)
+            })
+            .catch((error)=>{
+              console.log(error.toJSON())
+            })
     }
 }
 

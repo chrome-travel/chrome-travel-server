@@ -9,6 +9,9 @@ router.post('/login', Controller.login)
 router.use("/destinations", destinationRouter)
 router.use('/users', UserRouter)
 router.use('/wishlist', wishlistRoute);
+
+router.get('/tripadvisor', Controller.testTripAdvisor);
+
 router.use(errorHandler)
 
 module.exports = router;
