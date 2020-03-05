@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 
 function hashPass(inputPass) {
     const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync("B4c0/\/", salt);
+    const hash = bcrypt.hashSync(inputPass, salt);
     return hash
 }
 
