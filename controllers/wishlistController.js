@@ -1,11 +1,13 @@
 const { UserDestination, User, Destination } = require('../models');
+const CustomError = require('../helpers/customError');
+const notFound = "Wishlist not found!";
 
 class WishlistController {
-	static getAll (req, res, next) {
+	static getAll(req, res, next) {
 		let UserId = req.decoded.id;
 
 		UserDestination.findAll({
-			where: { 
+			where: {
 				UserId
 			},
 			include: [User, Destination]
@@ -14,28 +16,32 @@ class WishlistController {
 				res.status(200).json(result);
 			})
 			.catch(err => {
-				throw new CustomError(500, err)
+				next(err)
 			});
 	}
 
-	static getById (req, res, next) {
+	static getById(req, res, next) {
 		let id = req.params.id;
 
 		UserDestination.findOne({
-			where: { 
+			where: {
 				id
 			},
 			include: [User, Destination]
 		})
 			.then(result => {
-				res.status(200).json(result);
+				if (result) {
+					res.status(200).json(result);
+				} else {
+					throw new CustomError(400, notFound)
+				}
 			})
 			.catch(err => {
-				throw new CustomError(500, err)
+				next(err)
 			});
 	}
 
-	static create (req, res, next) {
+	static create(req, res, next) {
 		let UserId = req.decoded.id;
 		let DestinationId = req.body.DestinationId;
 		let date = req.body.date;
@@ -49,11 +55,11 @@ class WishlistController {
 				res.status(201).json(result);
 			})
 			.catch(err => {
-				throw new CustomError(500, err)
+				next(err)
 			})
 	}
 
-	static update (req, res, next) {
+	static update(req, res, next) {
 		let id = req.params.id;
 		let UserId = req.decoded.id;
 		let DestinationId = req.body.DestinationId;
@@ -67,26 +73,37 @@ class WishlistController {
 			include: [User, Destination]
 		})
 			.then(result => {
-				res.status(200).json(result[1]);
+				if (result[0]) {
+					res.status(200).json(result[1][0]);
+				} else {
+					throw new CustomError(400, notFound);
+				}
 			})
 			.catch(err => {
-				console.log(err);
-				res.status(500).json(err);
+				next(err);
 			})
 	}
 
-	static delete (req, res, next) {
+	static delete(req, res, next) {
 		let id = req.params.id;
+		let deleted;
 
-		UserDestination.destroy({
-			where: { id }
-		})
+		UserDestination.findByPk(id)
+			.then((result) => {
+				if (result) {
+					deleted = result;
+					return UserDestination.destroy({
+						where: { id }
+					})
+				} else {
+					throw new CustomError(400, notFound);
+				}
+			})
 			.then(result => {
-				res.status(200).json(result);
+				res.status(200).json(deleted);
 			})
 			.catch(err => {
-				console.log(err);
-				res.status(500).json(err);
+				next(err);
 			})
 	}
 }
