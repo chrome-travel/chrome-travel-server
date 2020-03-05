@@ -6,6 +6,11 @@ function hashPass(inputPass) {
     return hash
 }
 
+function comparePass(passInput, passHash){
+    return bcrypt.compareSync(passInput, passHash)
+}
+
 module.exports = {
-    hashPass
+    hashPass,
+    comparePass
 }
