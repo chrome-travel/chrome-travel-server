@@ -89,7 +89,7 @@ class Controller {
     }
 
     static getTop5Hotel (req, res, next) {
-        let query = req.body.query;
+        let query = req.body.query || '';
 
         axios({
             "method":"GET",
