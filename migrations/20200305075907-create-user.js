@@ -19,7 +19,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       phone_number: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       gender: {
         type: Sequelize.BOOLEAN
@@ -27,6 +27,9 @@ module.exports = {
       is_active: {
         type: Sequelize.BOOLEAN,
         defaultValue: true
+      },
+      role: {
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
