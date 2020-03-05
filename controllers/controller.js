@@ -40,8 +40,7 @@ class Controller{
                 }
             })
             .catch(err => {
-                // console.log(err)
-                res.status(500).json(err)
+                next(err)
             })    
     }
 
@@ -91,7 +90,7 @@ class Controller{
                 res.status(201).json({ token })
             })
             .catch(err => {
-                res.status(err)
+                next(err)
             })
     }
 }
