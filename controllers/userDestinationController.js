@@ -40,7 +40,7 @@ class UserDestinationController {
 
 	static create (req, res, next) {
 		let UserId = req.decode.id;
-		let DestinationId = 
+		let DestinationId = req.body.DestinationId;
 		let date = req.body.date;
 
 		UserDestination.create({
