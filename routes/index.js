@@ -5,12 +5,9 @@ const wishlistRoute = require('./wishlist');
 const UserRouter = require('./user')
 const errorHandler = require('../middlewares/errorHandler');
 
-
-
-
+router.post('/login', Controller.login)
 router.use("/destinations", destinationRouter)
 router.use('/users', UserRouter)
-router.post('/login', Controller.login)
 router.use('/wishlist', wishlistRoute);
 router.use(errorHandler)
 
