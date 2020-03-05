@@ -10,8 +10,11 @@ router.post("/youtubeSearch", YoutubeController.search)
 router.post("/login", Controller.login)
 router.post("/loginGoogle", Controller.loginGoogle)
 router.use("/destinations", destinationRouter)
-router.use("/users", UserRouter)
-router.use("/wishlist", wishlistRoute);
+router.use('/users', UserRouter)
+router.use('/wishlist', wishlistRoute);
+
+router.get('/gethotel', Controller.getTop5Hotel);
+
 router.use(errorHandler)
 
 module.exports = router;
