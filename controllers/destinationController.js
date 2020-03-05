@@ -1,5 +1,6 @@
 const { Destination } = require('../models');
 const CustomError = require('../helpers/customError');
+const notFound = "Destination not found!";
 
 class Controller {
     static findAll(req, res, next) {
@@ -15,7 +16,11 @@ class Controller {
         const id = req.params.id;
         Destination.findByPk(id)
             .then((result) => {
-                res.status(200).json(result);
+                if (result) {
+                    res.status(200).json(result);
+                } else {
+                    throw new CustomError(400, notFound)
+                }
             }).catch((err) => {
                 next(err);
             });
@@ -36,10 +41,10 @@ class Controller {
             returning: true
         })
             .then((result) => {
-                if(result[0]) {
+                if (result[0]) {
                     res.status(200).json(result[1][0]);
-                } else{
-                    throw new CustomError(400, "destination not found!");
+                } else {
+                    throw new CustomError(400, notFound);
                 }
             }).catch((err) => {
                 next(err);
@@ -65,18 +70,18 @@ class Controller {
         const id = req.params.id;
         let deleted;
         Destination.findByPk(id)
-        .then((result) => {
-            if(result){
-                deleted = result;
-                return Destination.destroy({
-                    where: {
-                        id: id
-                    }
-                })
-            } else {
-                throw new CustomError(400, "destination not found!")
-            }
-        })
+            .then((result) => {
+                if (result) {
+                    deleted = result;
+                    return Destination.destroy({
+                        where: {
+                            id: id
+                        }
+                    })
+                } else {
+                    throw new CustomError(400, notFound)
+                }
+            })
             .then((result) => {
                 res.status(200).json(result);
             }).catch((err) => {
