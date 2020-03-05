@@ -15,7 +15,7 @@ class ControllerUser{
     }
 
     static createUser(req,res,next) {
-        const { name, email, password, phone_number, gender, is_active} = req.body
+        const { name, email, password, phone_number, gender, is_active, role} = req.body
         console.log(gender)
         console.log(typeof gender)
         User.create({
@@ -24,27 +24,30 @@ class ControllerUser{
             password,
             phone_number,
             gender,
-            is_active
+            is_active,
+            role
         })
             .then(user => {
                 console.log(user)
                 res.status(201).json(user)
             })
             .catch(err => {
+                console.log(err)
                 res.status(500).json(err)
             })
     }
 
     static updateUser(req,res,next) {
         let id = req.params.id
-        const { name, email, password, phone_number, gender, is_active} = req.body
+        const { name, email, password, phone_number, gender, is_active, role} = req.body
         User.update({
             name,
             email,
             password,
             phone_number,
             gender,
-            is_active
+            is_active,
+            role
         },{
             where: {
                 id
