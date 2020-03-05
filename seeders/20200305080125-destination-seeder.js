@@ -4,30 +4,44 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('Destinations', [
       {
-        name: 'Labuan bajo',
-        city: "NTT",
+        name: 'Pantai Kuta',
+        city: "Kuta",
         country: "Indonesia",
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        name: 'Lembang',
-        city: "Bandung",
+        name: 'Farmhouse',
+        city: "Lembang",
         country: "Indonesia",
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        name: 'Pulau Seribu',
-        city: "Jakarta",
+        name: 'Legian',
+        city: "Legian Bali",
         country: "Indonesia",
         createdAt: new Date(),
         updatedAt: new Date()
       },
       {
-        name: 'Paris',
-        city: "Paris",
-        country: "Prancis",
+        name: 'Safari',
+        city: "Bogor",
+        country: "Indonesia",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: 'Pantai Losari',
+        city: "Makassar",
+        country: "Indonesia",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: 'Ancol',
+        city: "Jakarta Utara",
+        country: "Indonesia",
         createdAt: new Date(),
         updatedAt: new Date()
       },
