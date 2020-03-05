@@ -42,8 +42,7 @@ class Controller{
             .catch(err => {
                 // console.log(err)
                 res.status(500).json(err)
-            })
-            
+            })    
     }
 
     static loginGoogle(req, res, next) {
