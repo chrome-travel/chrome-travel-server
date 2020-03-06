@@ -3,6 +3,7 @@ const CustomError = require('../helpers/customError');
 const notFound = "Destination not found!";
 const zomato = require('../helpers/zomato');
 const tripAdvisor = require('../helpers/tripAdvisor');
+const youtube = require('../helpers/youtube');
 
 class Controller {
     static findAll(req, res, next) {
@@ -18,6 +19,7 @@ class Controller {
         const id = req.params.id;
         let destination;
         let restaurants;
+        let hotels;
         Destination.findByPk(id)
             .then((result) => {
                 if (result) {
@@ -34,15 +36,19 @@ class Controller {
                         rating: el.restaurant.user_rating.aggregate_rating
                     }
                 })
-                console.log(tripAdvisor);
                 return tripAdvisor(destination.city)
             })
-            .then((result) => {
-                let hotels = result.data.data.map(el => el = el.name)
+            .then(result => {
+                hotels = result.data.data.map(el => el = el.name)
+                return youtube(destination.name)
+            })
+            .then((response) => {
+                let youtubeVideos = response.data.items.map(el => el = el.id)
                 let final = {
                     data: destination,
                     zomato: restaurants,
-                    hotels
+                    hotels,
+                    youtube: youtubeVideos
                 }
                 res.status(200).json(final);
             })
