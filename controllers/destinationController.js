@@ -1,7 +1,7 @@
 const { Destination } = require('../models');
 const CustomError = require('../helpers/customError');
 const notFound = "Destination not found!";
-const ZomatoC = require('../controllers/zomatoController');
+const zomato = require('../helpers/zomato');
 
 class Controller {
     static findAll(req, res, next) {
@@ -20,7 +20,7 @@ class Controller {
             .then((result) => {
                 if (result) {
                     destination = result;
-                    return ZomatoC.getResto(result.city)
+                    return zomato(result.city)
                 } else {
                     throw new CustomError(400, notFound)
                 }
