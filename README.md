@@ -1,12 +1,8 @@
 # chrome-travel-server
-<!--
-router.use("/destinations", destinationRouter)
-router.use('/users', UserRouter)
-router.use('/wishlist', wishlistRoute); -->
 
-<h1>Login</h1>
+<h1>User</h1>
 <details>
-	<summary><strong>Login</strong></summary>
+	<summary><strong>Sign In</strong></summary>
 
 *  **URL**
 
@@ -56,7 +52,50 @@ router.use('/wishlist', wishlistRoute); -->
 		```
 </details>
 
-<h1>User</h1>
+<details>
+	<summary><strong>Google Sign In</strong></summary>
+
+*  **URL**
+
+	`/loginGoogle`
+
+*  **Method:**
+
+	`POST`
+
+*  **Data Params:**
+
+	* Request Header:
+		```
+		{
+		  "id_token": [user-token]
+		}
+		```
+
+*  **Responses:**
+
+	* **Success Response**
+
+		Code: 200 / 201 (If User is not registered yet)
+
+		Content:
+		```
+		{
+		  token: [token-string]
+		}
+		```
+
+	* **Error Response**
+
+		Code: 500
+
+		Content:
+		```
+		{
+		  error: [error message]
+		}
+		```
+</details>
 
 <details>
 	<summary><strong>Create User</strong></summary>
@@ -121,12 +160,13 @@ router.use('/wishlist', wishlistRoute); -->
 		```
 </details>
 
+<h1>Destination</h1>
 <details>
-	<summary><strong>Get User</strong></summary>
+	<summary><strong>Get Destination</strong></summary>
 
 *  **URL**
 
-	`/users`
+	`/destinations/`
 
 *  **Method:**
 
@@ -145,46 +185,89 @@ router.use('/wishlist', wishlistRoute); -->
 
 		Code: 200
 
-		Content: a JSON array of all User
+		Content: a JSON object of deleted User
 		```
-		[
-		  {
-		    "id": [user-id],
-		    "name": [user-name],
-		    "email": [user-email],
-		    "password": [password-token],
-		    "phone_number": [user-phone-number],
-		    "gender": [true/false],
-		    "is_active": [true/false],
-		    "role": [true/false],
-		    "createdAt": [created-date],
-		    "updatedAt": [updated-date]
-		  }
-		]
+		{
+		  "id": [destination-id],
+		  "name": [destination-name],
+		  "city": [destination-city],
+		  "country": [destination-country],
+		  "updatedAt": [updated-date],
+		  "createdAt": [created-date]
+		}
 		```
 
 	* **Error Response**
 
-		Code: 500
+		Code: 
+		500
 
 		Content:
 		```
 		{
-		  error: "error message"
+		  "error message"
 		}
 		```
 </details>
 
 <details>
-	<summary><strong>Update User</strong></summary>
+	<summary><strong>Get Destination By Id</strong></summary>
 
 *  **URL**
 
-	`/users/:id`
+	`/destinations/:id`
 
 *  **Method:**
 
-	`PUT`
+	`GET`
+
+*  **Data Params:**
+
+	* Request Header (**Required**):
+		```
+		token: [token-string]
+		```
+
+* **Responses:**
+
+	* **Success Response**
+
+		Code: 200
+
+		Content:
+		```
+		{
+		  "data": [destination-data],
+		  "zomato": [query result from zomato],
+		  "youtube": [query result from youtube],
+		  "hotel": [query result from tripadvisor]
+		}
+		```
+
+	* **Error Response**
+
+		Code: 
+		500
+
+		Content:
+		```
+		{
+		  "error message"
+		}
+		```
+</details>
+
+<h1>Wishlist</h1>
+<details>
+	<summary><strong>Add Wishlist</strong></summary>
+
+*  **URL**
+
+	`/wishlist/`
+
+*  **Method:**
+
+	`POST`
 
 *  **Data Params:**
 
@@ -195,64 +278,9 @@ router.use('/wishlist', wishlistRoute); -->
 
 	* Request Body (**Required**):
 		```
-		name=[string]
-		email=[string]
-		password=[string]
-		phone_number=[string]
-		is_active=[boolean]
-		role=[boolean]
-		```
-
-* **Responses:**
-
-	* **Success Response**
-
-		Code: 200
-
-		Content: a JSON object of updated User
-		```
-		{
-		  "id": [user-id],
-		  "name": [user-name],
-		  "email": [user-email],
-		  "password": [password-token],
-		  "phone_number": [user-phone-number],
-		  "gender": [true/false],
-		  "is_active": [true/false],
-		  "role": [true/false],
-		  "createdAt": [created-date],
-		  "updatedAt": [updated-date]
-		}
-		```
-
-	* **Error Response**
-
-		Code: 500
-
-		Content:
-		```
-		{
-		  error: "error message"
-		}
-		```
-</details>
-
-<details>
-	<summary><strong>Delete User</strong></summary>
-
-*  **URL**
-
-	`/users/:id`
-
-*  **Method:**
-
-	`DELETE`
-
-*  **Data Params:**
-
-	* Request Header (**Required**):
-		```
 		token: [token-string]
+		DestinationId: [destination-id]
+		date: [date]
 		```
 
 * **Responses:**
@@ -264,31 +292,71 @@ router.use('/wishlist', wishlistRoute); -->
 		Content: a JSON object of deleted User
 		```
 		{
-		  "id": [user-id],
-		  "name": [user-name],
-		  "email": [user-email],
-		  "password": [password-token],
-		  "phone_number": [user-phone-number],
-		  "gender": [true/false],
-		  "is_active": [true/false],
-		  "role": [true/false],
-		  "createdAt": [created-date],
-		  "updatedAt": [updated-date]
+		  "id": [destination-id],
+		  "name": [destination-name],
+		  "city": [destination-city],
+		  "country": [destination-country],
+		  "updatedAt": [updated-date],
+		  "createdAt": [created-date]
 		}
 		```
 
 	* **Error Response**
 
-		Code: 500
+		Code: 
+		500
 
 		Content:
 		```
 		{
-		  error: "error message"
+		  "error message"
 		}
 		```
 </details>
-<!-- router.get('/', ControllerUser.getUsers)
-router.post('/', ControllerUser.createUser)
-router.put('/:id', ControllerUser.updateUser)
-router.delete('/:id', ControllerUser.deleteUser) -->
+
+<details>
+	<summary><strong>Get Destination By Id</strong></summary>
+
+*  **URL**
+
+	`/destinations/:id`
+
+*  **Method:**
+
+	`GET`
+
+*  **Data Params:**
+
+	* Request Header (**Required**):
+		```
+		token: [token-string]
+		```
+
+* **Responses:**
+
+	* **Success Response**
+
+		Code: 200
+
+		Content:
+		```
+		{
+		  "data": [destination-data],
+		  "zomato": [query result from zomato],
+		  "youtube": [query result from youtube],
+		  "hotel": [query result from tripadvisor]
+		}
+		```
+
+	* **Error Response**
+
+		Code: 
+		500
+
+		Content:
+		```
+		{
+		  "error message"
+		}
+		```
+</details>
