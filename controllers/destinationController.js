@@ -20,30 +20,32 @@ class Controller {
         let destination;
         let restaurants;
         let hotels;
+        let youtubeVideos;
+
         Destination.findByPk(id)
             .then((result) => {
                 if (result) {
                     destination = result;
-                    return zomato(result.city)
+                    // return zomato(result.city)
+                    return Promise.all([zomato(result.city), tripAdvisor(destination.city), youtube(destination.name)])
                 } else {
                     throw new CustomError(400, notFound)
                 }
             })
-            .then((result) => {
-                restaurants = result.data.restaurants.map(el => {
+            .then((values) => {
+                let zomatoResult = values[0];
+                let taResult = values[1];
+                let youtubeResult = values[2];
+
+                restaurants = zomatoResult.data.restaurants.map(el => {
                     return {
                         name: el.restaurant.name,
                         rating: el.restaurant.user_rating.aggregate_rating
                     }
-                })
-                return tripAdvisor(destination.city)
-            })
-            .then(result => {
-                hotels = result.data.data.map(el => el = el.name)
-                return youtube(destination.name)
-            })
-            .then((response) => {
-                let youtubeVideos = response.data.items.map(el => el = el.id)
+                });
+                hotels = taResult.data.data.map(el => el = el.name);
+                youtubeVideos = youtubeResult.data.items.map(el => el = el.id);
+
                 let final = {
                     data: destination,
                     zomato: restaurants,
