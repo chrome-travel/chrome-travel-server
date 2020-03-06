@@ -11,8 +11,6 @@ router.use("/destinations", destinationRouter)
 router.use('/users', UserRouter)
 router.use('/wishlist', wishlistRoute);
 
-// router.get('/gethotel', Controller.getTop5Hotel);
-
 router.use(errorHandler)
 
 module.exports = router;

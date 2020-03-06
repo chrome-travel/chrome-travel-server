@@ -1,7 +1,7 @@
 const { verifyToken } = require('../helpers/jwt');
 const { User } = require('../models/index');
 
-module.exports = function(req, res, next) {
+module.exports = function (req, res, next) {
     try {
         const token = req.headers.token;
 
@@ -13,7 +13,7 @@ module.exports = function(req, res, next) {
             }
         })
             .then(response => {
-                if(response){
+                if (response) {
                     next()
                 }
                 else {
@@ -27,8 +27,8 @@ module.exports = function(req, res, next) {
                 next(err)
             })
     }
-    
-    catch(err) {
+
+    catch (err) {
         next(err)
     }
 }
