@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     UserId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      validate : {
+      validate: {
         notNull: {
           args: true,
           msg: "User ID cannot null"
@@ -27,15 +27,15 @@ module.exports = (sequelize, DataTypes) => {
     },
 
     date: DataTypes.DATEONLY
-  }, 
-  {
-    sequelize
-  });
+  },
+    {
+      sequelize
+    });
 
   UserDestination.associate = function (models) {
     UserDestination.belongsTo(models.User);
     UserDestination.belongsTo(models.Destination);
   };
-  
+
   return UserDestination;
 };

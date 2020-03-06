@@ -1,7 +1,8 @@
 const { verifyToken } = require('../helpers/jwt');
 const { User } = require('../models/index');
+const CustomError = require('./../helpers/customError');
 
-module.exports = function(req, res, next) {
+module.exports = function (req, res, next) {
     try {
         const token = req.headers.token;
 
@@ -13,22 +14,19 @@ module.exports = function(req, res, next) {
             }
         })
             .then(response => {
-                if(response){
+                if (response) {
                     next()
                 }
                 else {
-                    next({
-                        status: 401,
-                        msg: "Authentication failed! Please check your email"
-                    })
+                    throw new CustomError(401, "Authentication failed! Please check your email")
                 }
             })
             .catch(err => {
                 next(err)
             })
     }
-    
-    catch(err) {
+
+    catch (err) {
         next(err)
     }
 }

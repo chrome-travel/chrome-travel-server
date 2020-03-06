@@ -64,25 +64,25 @@ module.exports = (sequelize, DataTypes) => {
 
     is_active: DataTypes.BOOLEAN,
     role: DataTypes.BOOLEAN,
-  }, 
-  {
-    hooks: {
-      beforeCreate: (user, options) => {
-        user.is_active = true,
-        user.role = false
+  },
+    {
+      hooks: {
+        beforeCreate: (user, options) => {
+          user.is_active = true,
+            user.role = false
+        },
+        beforeValidate: (user, options) => {
+          const password = hashPass(user.password)
+          console.log(password)
+          user.password = password
+        }
       },
-      beforeValidate: (user, options) => {
-        const password = hashPass(user.password)
-        console.log(password)
-        user.password = password
-      }
-    },
-    sequelize
-  });
+      sequelize
+    });
 
   User.associate = function (models) {
     User.hasMany(models.UserDestination);
   };
-  
+
   return User;
 };

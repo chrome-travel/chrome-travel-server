@@ -3,7 +3,6 @@ const CustomError = require('./../helpers/customError');
 const { comparePass } = require('./../helpers/bcrypt');
 const { generateToken } = require('./../helpers/jwt');
 const { OAuth2Client } = require('google-auth-library');
-const axios = require('axios');
 
 const invalid = "Email/Password wrong";
 
