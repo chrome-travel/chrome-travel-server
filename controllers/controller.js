@@ -2,8 +2,7 @@ const { User } = require('./../models');
 const CustomError = require('./../helpers/customError');
 const { comparePass } = require('./../helpers/bcrypt');
 const { generateToken } = require('./../helpers/jwt');
-const {OAuth2Client} = require('google-auth-library');
-const axios = require('axios');
+const { OAuth2Client } = require('google-auth-library');
 
 const invalid = "Email/Password wrong";
 
@@ -86,48 +85,6 @@ class Controller {
             .catch(err => {
                 next(err)
             })
-    }
-
-    static getTop5Hotel (req, res, next) {
-        let query = req.body.query || '';
-
-        axios({
-            "method":"GET",
-            "url":"https://tripadvisor1.p.rapidapi.com/locations/search",
-            "headers":{
-                "x-rapidapi-host":"tripadvisor1.p.rapidapi.com",
-                "x-rapidapi-key":"4a003621a5msh52f32a49632069bp1c8464jsn6d981b16e394"
-            },
-            "params":{
-                query
-            }
-        })
-            .then(response => {
-                let locId = response.data.data[0].result_object.location_id;
-                return axios({
-                    "method":"GET",
-                    "url":"https://tripadvisor1.p.rapidapi.com/hotels/list",
-                    "headers":{
-                        "x-rapidapi-host":"tripadvisor1.p.rapidapi.com",
-                        "x-rapidapi-key":"4a003621a5msh52f32a49632069bp1c8464jsn6d981b16e394"
-                    },
-                    "params":{
-                        "limit":"5",
-                        "order":"asc",
-                        "sort":"recommended",
-                        "location_id":locId,
-                    }
-                })
-            })
-            .then((response)=>{
-                // console.log(response);
-                let result = response.data.data.map(el => el = el.name)
-                res.status(200).json({hotels: result})
-            })
-            .catch(err => {
-                next(err);
-                console.log(error);
-            });
     }
 }
 

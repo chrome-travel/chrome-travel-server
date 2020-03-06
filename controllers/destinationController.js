@@ -2,6 +2,8 @@ const { Destination } = require('../models');
 const CustomError = require('../helpers/customError');
 const notFound = "Destination not found!";
 const zomato = require('../helpers/zomato');
+const tripAdvisor = require('../helpers/tripAdvisor');
+const youtube = require('../helpers/youtube');
 
 class Controller {
     static findAll(req, res, next) {
@@ -16,25 +18,39 @@ class Controller {
     static findOne(req, res, next) {
         const id = req.params.id;
         let destination;
+        let restaurants;
+        let hotels;
+        let youtubeVideos;
+
         Destination.findByPk(id)
             .then((result) => {
                 if (result) {
                     destination = result;
-                    return zomato(result.city)
+                    // return zomato(result.city)
+                    return Promise.all([zomato(result.city), tripAdvisor(destination.city), youtube(destination.name)])
                 } else {
                     throw new CustomError(400, notFound)
                 }
             })
-            .then((result) => {
-                let restaurants = result.data.restaurants.map(el => {
+            .then((values) => {
+                let zomatoResult = values[0];
+                let taResult = values[1];
+                let youtubeResult = values[2];
+
+                restaurants = zomatoResult.data.restaurants.map(el => {
                     return {
                         name: el.restaurant.name,
                         rating: el.restaurant.user_rating.aggregate_rating
                     }
-                })
+                });
+                hotels = taResult.data.data.map(el => el = el.name);
+                youtubeVideos = youtubeResult.data.items.map(el => el = el.id);
+
                 let final = {
                     data: destination,
-                    zomato: restaurants
+                    zomato: restaurants,
+                    hotels,
+                    youtube: youtubeVideos
                 }
                 res.status(200).json(final);
             })

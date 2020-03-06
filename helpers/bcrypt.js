@@ -6,7 +6,7 @@ function hashPass(inputPass) {
     return hash
 }
 
-function comparePass(passInput, passHash){
+function comparePass(passInput, passHash) {
     return bcrypt.compareSync(passInput, passHash)
 }
 

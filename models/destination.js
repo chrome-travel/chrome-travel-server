@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class Destination extends sequelize.Sequelize.Model { }
 
   Destination.init({
-    
+
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -43,9 +43,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   },
 
-  {
-    sequelize
-  });
+    {
+      sequelize
+    });
 
   Destination.associate = function (models) {
     Destination.hasMany(models.UserDestination)
