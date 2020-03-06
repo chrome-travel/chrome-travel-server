@@ -1,6 +1,7 @@
 const { Destination } = require('../models');
 const CustomError = require('../helpers/customError');
 const notFound = "Destination not found!";
+const zomato = require('../helpers/zomato');
 
 class Controller {
     static findAll(req, res, next) {
@@ -14,14 +15,30 @@ class Controller {
 
     static findOne(req, res, next) {
         const id = req.params.id;
+        let destination;
         Destination.findByPk(id)
             .then((result) => {
                 if (result) {
-                    res.status(200).json(result);
+                    destination = result;
+                    return zomato(result.city)
                 } else {
                     throw new CustomError(400, notFound)
                 }
-            }).catch((err) => {
+            })
+            .then((result) => {
+                let restaurants = result.data.restaurants.map(el => {
+                    return {
+                        name: el.restaurant.name,
+                        rating: el.restaurant.user_rating.aggregate_rating
+                    }
+                })
+                let final = {
+                    data: destination,
+                    zomato: restaurants
+                }
+                res.status(200).json(final);
+            })
+            .catch((err) => {
                 next(err);
             });
     }
