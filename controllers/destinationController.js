@@ -33,6 +33,8 @@ class Controller {
                 }
             })
             .then((values) => {
+                console.log(values);
+                
                 let zomatoResult = values[0];
                 let taResult = values[1];
                 let youtubeResult = values[2];
@@ -55,6 +57,8 @@ class Controller {
                 res.status(200).json(final);
             })
             .catch((err) => {
+                console.log(err);
+                
                 next(err);
             });
     }
