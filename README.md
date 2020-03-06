@@ -21,7 +21,7 @@ router.use('/wishlist', wishlistRoute); -->
 	* Request Header:
 		```
 		{
-			"Content-Type": "application/x-www-form-urlencoded"
+		  "Content-Type": "application/x-www-form-urlencoded"
 		}
 		```
 
@@ -40,7 +40,7 @@ router.use('/wishlist', wishlistRoute); -->
 		Content:
 		```
 		{
-			token: "token-id"
+		  token: [token-string]
 		}
 		```
 
@@ -51,7 +51,7 @@ router.use('/wishlist', wishlistRoute); -->
 		Content:
 		```
 		{
-			error: "error message"
+		  error: [error message]
 		}
 		```
 </details>
@@ -74,7 +74,7 @@ router.use('/wishlist', wishlistRoute); -->
 	* Request Header:
 		```
 		{
-			"Content-Type": "application/x-www-form-urlencoded",
+		  "Content-Type": "application/x-www-form-urlencoded",
 		}
 		```
 
@@ -94,16 +94,20 @@ router.use('/wishlist', wishlistRoute); -->
 
 		Code: 200
 
-		Content:
+		Content: a JSON object of created User
 		```
 		{
-			id : 1, 
-			title : 'your title', 
-			description: 'your description', 
-			status: false, 
-			due_date: 2020/03/01
+		  "id": [user-id],
+		  "name": [user-name],
+		  "email": [user-email],
+		  "password": [password-token],
+		  "phone_number": [user-phone-number],
+		  "gender": [true/false],
+		  "is_active": [true/false],
+		  "role": [true/false],
+		  "createdAt": [created-date],
+		  "updatedAt": [updated-date]
 		}
-		```
 
 	* **Error Response**
 
@@ -117,7 +121,7 @@ router.use('/wishlist', wishlistRoute); -->
 		```
 </details>
 
-<!-- <details> -->
+<details>
 	<summary><strong>Get User</strong></summary>
 
 *  **URL**
@@ -129,6 +133,65 @@ router.use('/wishlist', wishlistRoute); -->
 	`GET`
 
 *  **Data Params:**
+
+	* Request Header (**Required**):
+		```
+		token: [token-string]
+		```
+
+* **Responses:**
+
+	* **Success Response**
+
+		Code: 200
+
+		Content: a JSON array of all User
+		```
+		[
+		  {
+		    "id": [user-id],
+		    "name": [user-name],
+		    "email": [user-email],
+		    "password": [password-token],
+		    "phone_number": [user-phone-number],
+		    "gender": [true/false],
+		    "is_active": [true/false],
+		    "role": [true/false],
+		    "createdAt": [created-date],
+		    "updatedAt": [updated-date]
+		  }
+		]
+		```
+
+	* **Error Response**
+
+		Code: 500
+
+		Content:
+		```
+		{
+		  error: "error message"
+		}
+		```
+</details>
+
+<details>
+	<summary><strong>Update User</strong></summary>
+
+*  **URL**
+
+	`/users/:id`
+
+*  **Method:**
+
+	`PUT`
+
+*  **Data Params:**
+
+	* Request Header (**Required**):
+		```
+		token: [token-string]
+		```
 
 	* Request Body (**Required**):
 		```
@@ -146,14 +209,19 @@ router.use('/wishlist', wishlistRoute); -->
 
 		Code: 200
 
-		Content:
+		Content: a JSON object of updated User
 		```
 		{
-			id : 1, 
-			title : 'your title', 
-			description: 'your description', 
-			status: false, 
-			due_date: 2020/03/01
+		  "id": [user-id],
+		  "name": [user-name],
+		  "email": [user-email],
+		  "password": [password-token],
+		  "phone_number": [user-phone-number],
+		  "gender": [true/false],
+		  "is_active": [true/false],
+		  "role": [true/false],
+		  "createdAt": [created-date],
+		  "updatedAt": [updated-date]
 		}
 		```
 
@@ -164,7 +232,59 @@ router.use('/wishlist', wishlistRoute); -->
 		Content:
 		```
 		{
-			error: "error message"
+		  error: "error message"
+		}
+		```
+</details>
+
+<details>
+	<summary><strong>Delete User</strong></summary>
+
+*  **URL**
+
+	`/users/:id`
+
+*  **Method:**
+
+	`DELETE`
+
+*  **Data Params:**
+
+	* Request Header (**Required**):
+		```
+		token: [token-string]
+		```
+
+* **Responses:**
+
+	* **Success Response**
+
+		Code: 200
+
+		Content: a JSON object of deleted User
+		```
+		{
+		  "id": [user-id],
+		  "name": [user-name],
+		  "email": [user-email],
+		  "password": [password-token],
+		  "phone_number": [user-phone-number],
+		  "gender": [true/false],
+		  "is_active": [true/false],
+		  "role": [true/false],
+		  "createdAt": [created-date],
+		  "updatedAt": [updated-date]
+		}
+		```
+
+	* **Error Response**
+
+		Code: 500
+
+		Content:
+		```
+		{
+		  error: "error message"
 		}
 		```
 </details>
