@@ -1,5 +1,8 @@
 const router = require('express').Router()
 const DestinationController = require('../controllers/destinationController');
+const authentication = require("../middlewares/authentication");
+
+router.use(authentication);
 
 router.get("/", DestinationController.findAll);
 router.post("/", DestinationController.create);
